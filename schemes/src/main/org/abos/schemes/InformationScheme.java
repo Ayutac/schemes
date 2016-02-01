@@ -12,7 +12,7 @@ import java.util.List;
  * components.
  * 
  * @author Sebastian Koch
- * @version 1.0.0
+ * @version 1.0.1
  * @since 1.0.0
  * 
  * @see InformationComponent
@@ -22,7 +22,7 @@ public interface InformationScheme<E extends InformationComponent>
 extends Scheme<E>, List<E> {
 
     /**
-     * Returns all components of this scheme which match the given string. If
+     * Returns all components of this scheme which equal the given string. If
      * {@code fifo} is true, all elements of this scheme will be searched 
      * through in the order of this scheme's iterator. Else all elements 
      * connected to the roots will be searched through.
@@ -44,8 +44,11 @@ extends Scheme<E>, List<E> {
      * @param regex the regular expression to use. Will be matched with the 
      * name.
      * @param fifo Decides which elements will be searched through.
-     * @return A list containing all matching elements.
+     * @return A list containing all matching elements. The list may be empty,
+     * if there weren't any matches, or <code>null</code> if the regex was
+     * invalid.
      * 
+     * @version 1.0.1
      * @since 1.0.0
      * 
      * @see InformationComponent#getName()

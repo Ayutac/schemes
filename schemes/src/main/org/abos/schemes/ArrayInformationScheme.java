@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -448,15 +450,22 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
      */
     /**
      * {@inheritDoc}
+     * @version 1.0.1
      * @since 1.0.0
      */
     @SuppressWarnings("unchecked") // XXX proper documentation and error warning
     @Override
     public List<E> getByRegex(String regex, boolean fifo) {
+        Pattern p = null;
+        try {
+            p = Pattern.compile(regex);
+        } catch (PatternSyntaxException ex) {
+            return null;
+        }
         LinkedList<E> result = new LinkedList<E>();
         if (fifo) { // all elements of scheme
             for (E e : this) {
-                if (e.getName() != null && e.getName().matches(regex))
+                if (e.getName() != null && p.matcher(e.getName()).matches())
                     result.add(e);
             }
         } else { // all elements connected to roots
