@@ -8,7 +8,7 @@ import java.util.Iterator;
  * or children.
  * 
  * @author Sebastian Koch
- * @version 1.0.0
+ * @version 1.1.0
  * @since 1.0.0
  */
 public interface SchemeComponent extends Cloneable {
@@ -158,9 +158,23 @@ public interface SchemeComponent extends Cloneable {
      * component.
      * 
      * @since 1.0.0
+     * 
+     * @see #forceFamilyApart()
      */
     public void forceFamilyTogether();
-    
+
+    /**
+     * The add/remove Parent/Child methods do not change the new/old component,
+     * in other words they don't add/remove a Child/Parent accordingly. This 
+     * method will change all parents and children into denying this 
+     * component.
+     * 
+     * @since 1.1.0
+     * 
+     * @see #forceFamilyTogether()
+     */
+    public void forceFamilyApart();
+
     /**
      * Returns an iterator depending on the argument.
      * @param type The type of the iterator.

@@ -16,7 +16,7 @@ import java.util.List;
  * This class is not thread-safe.
  * 
  * @author Sebastian Koch
- * @version 1.0.0
+ * @version 1.1.0
  * @since 1.0.0
  * 
  * @see SchemeComponent
@@ -246,6 +246,25 @@ public abstract class AbstractSchemeComponent implements SchemeComponent {
 			if (!c.isChildOf(this))
 				c.addParent(this);
 	}
+    
+    /*
+     * (non-JavaDoc)
+     *
+     * @see org.abos.schemes.SchemeComponent#forceFamilyApart()
+     */
+    /**
+     * {@inheritDoc}
+     * @since 1.1.0
+     */
+    @Override
+    public void forceFamilyApart() {
+        for (SchemeComponent c : parents)
+            if (c.isParentOf(this))
+                c.removeChild(this);
+        for (SchemeComponent c : children)
+            if (c.isChildOf(this))
+                c.removeParent(this);
+    }
 
 	/*
      * (non-JavaDoc)
