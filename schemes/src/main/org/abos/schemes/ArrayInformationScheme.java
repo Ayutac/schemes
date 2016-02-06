@@ -387,9 +387,48 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
     // Javadoc throws?
     public void load(String pathToFile) throws IOException, XMLStreamException {
         load(new File(pathToFile));
-    }
+    }    
 
-    
+    /* 
+     * (non-JavaDoc)
+     * 
+     * @see org.abos.schemes.DOTWriter#writeDOT(java.io.Writer)
+     */
+    /**
+     * {@inheritDoc}
+     * @since 1.0.0
+     */
+    @Override
+    public void writeDOT(Writer wr) throws IOException {
+        BufferedWriter bw = new BufferedWriter(wr);
+        bw.write(DOT_START);
+        for (E ic : this) {
+            bw.write(DOT_TAB);
+            bw.write(DOT_QUOTES);
+            bw.write(ic.getName());
+            bw.write(DOT_QUOTES);
+            Iterator<SchemeComponent> children = ic.childrenIterator();
+            // write children down
+            if (!children.hasNext()) {
+                bw.write(DOT_EOL);
+                continue;
+            }
+            bw.write(DOT_CHILDREN_START);
+            while (true) {
+                bw.write(DOT_QUOTES);
+                bw.write(((E)children.next()).getName());
+                bw.write(DOT_QUOTES);
+                if (children.hasNext())
+                    bw.write(DOT_CHILDREN_SEP);
+                else {
+                    bw.write(DOT_CHILDREN_END);
+                    break;
+                }
+            }
+        }
+        bw.write(DOT_END);
+        bw.close();
+    }   
     
     /*
      * remember to keep getByRegex in check when making changes here
@@ -435,48 +474,7 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
             } //-> while (elements to check)
         } //-> if (search starting from the roots)
         return result;
-    }
-
-    /* 
-     * (non-JavaDoc)
-     * 
-     * @see org.abos.schemes.DOTWriter#writeDOT(java.io.Writer)
-     */
-    /**
-     * {@inheritDoc}
-     * @since 1.0.0
-     */
-    @Override
-    public void writeDOT(Writer wr) throws IOException {
-        BufferedWriter bw = new BufferedWriter(wr);
-        bw.write(DOT_START);
-        for (E ic : this) {
-            bw.write(DOT_TAB);
-            bw.write(DOT_QUOTES);
-            bw.write(ic.getName());
-            bw.write(DOT_QUOTES);
-            Iterator<SchemeComponent> children = ic.childrenIterator();
-            // write children down
-            if (!children.hasNext()) {
-                bw.write(DOT_EOL);
-                continue;
-            }
-            bw.write(DOT_CHILDREN_START);
-            while (true) {
-                bw.write(DOT_QUOTES);
-                bw.write(((E)children.next()).getName());
-                bw.write(DOT_QUOTES);
-                if (children.hasNext())
-                    bw.write(DOT_CHILDREN_SEP);
-                else {
-                    bw.write(DOT_CHILDREN_END);
-                    break;
-                }
-            }
-        }
-        bw.write(DOT_END);
-        bw.close();
-    }    
+    } 
     
     /*
      * remember to keep getByString in check when making changes here
