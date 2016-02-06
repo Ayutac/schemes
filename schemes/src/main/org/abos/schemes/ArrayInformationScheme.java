@@ -34,7 +34,7 @@ import javax.xml.stream.XMLStreamWriter;
  * This class is not thread-safe.
  * 
  * @author Sebastian Koch
- * @version 1.0.0
+ * @version 1.1.0
  * @since 1.0.0
  * 
  * @see ArrayScheme
@@ -429,6 +429,56 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
         bw.write(DOT_END);
         bw.close();
     }   
+    
+    /**
+     * Exports the information scheme in DOT format to a given writer.
+     * @param wr the writer to export the scheme to
+     * @throws IOException
+     * 
+     * @since 1.1.0
+     * 
+     * @see #writeDOT(Writer)
+     */
+    // Javadoc throws? NPE?
+    public void export(Writer wr) throws IOException {
+        writeDOT(wr);
+    }
+    
+    /**
+     * Exports the information scheme as DOT file.
+     * @param file the file to export the scheme to
+     * @throws FileNotFoundException
+     * @throws IOException
+     * 
+     * @since 1.1.0
+     * 
+     * @see #export(Writer)
+     * @see #writeDOT(Writer)
+     */
+    // Javadoc throws? NPE?
+    public void export(File file) throws IOException {
+        FileWriter fw = new FileWriter(file);
+        export(fw);
+        fw.close();
+    }
+    
+    /**
+     * Exports the information scheme as DOT file.
+     * @param pathToFile the path to the file to export the scheme to
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws NullPointerException If the <code>pathToFile</code> argument is
+     * <code>null</code>.
+     * 
+     * @since 1.1.0
+     * 
+     * @see #export(File)
+     * @see #writeDOT(Writer)
+     */
+    // Javadoc throws?
+    public void export(String pathToFile) throws IOException {
+        export(new File(pathToFile));
+    }    
     
     /*
      * remember to keep getByRegex in check when making changes here
