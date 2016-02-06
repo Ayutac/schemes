@@ -78,6 +78,76 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
     public ArrayInformationScheme(Collection<? extends E> c) {
         super(c);
     }
+
+    /*
+     * (non-JavaDoc)
+     * 
+     * @see org.abos.schemes.XMLSerializable#writeXML(org.abos.schemes.
+     * IntendedXMLStreamWriter)
+     */
+    /**
+     * {@inheritDoc}
+     * @since 1.0.0
+     */
+    @Override
+    public void writeXML(IntendedXMLStreamWriter sw) throws XMLStreamException {
+        writeXMLStart(sw);
+        writeXMLContent(sw);
+        writeXMLEnd(sw);
+    }
+
+    /*
+     * (non-JavaDoc)
+     * 
+     * @see org.abos.schemes.XMLSerializable#writeXMLStart(org.abos.schemes.
+     * IntendedXMLStreamWriter)
+     */
+    /**
+     * {@inheritDoc}
+     * @since 1.0.0
+     */
+    @Override
+    public void writeXMLStart(IntendedXMLStreamWriter sw)
+            throws XMLStreamException {
+        sw.writeStartElement(XML_SCHEME);
+    }
+    
+    
+    /*
+     * (non-JavaDoc)
+     * 
+     * @see org.abos.schemes.XMLSerializable#writeXMLContent(org.abos.schemes.
+     * IntendedXMLStreamWriter)
+     */
+    /**
+     * {@inheritDoc}
+     * @since 1.0.0
+     */
+    @Override
+    public void writeXMLContent(IntendedXMLStreamWriter sw)
+            throws XMLStreamException {
+        sw.writeStartElement(XML_NODES);
+        for (InformationComponent ic : this) {
+            ic.writeXML(sw);
+        }
+        sw.writeEndElement(); 
+    }
+
+    /*
+     * (non-JavaDoc)
+     * 
+     * @see org.abos.schemes.XMLSerializable#writeXMLEnd(org.abos.schemes.
+     * IntendedXMLStreamWriter)
+     */
+    /**
+     * {@inheritDoc}
+     * @since 1.0.0
+     */
+    @Override
+    public void writeXMLEnd(IntendedXMLStreamWriter sw)
+            throws XMLStreamException {
+        sw.writeEndElement();
+    }
     
     /**
      * Saves the information scheme as XML to a given writer by using the
@@ -154,145 +224,6 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
     // Javadoc complete throws
     public void save(String pathToFile) throws IOException, XMLStreamException {
         save(new File(pathToFile));
-    }
-
-    /*
-     * (non-JavaDoc)
-     * 
-     * @see org.abos.schemes.XMLSerializable#writeXML(org.abos.schemes.
-     * IntendedXMLStreamWriter)
-     */
-    /**
-     * {@inheritDoc}
-     * @since 1.0.0
-     */
-    @Override
-    public void writeXML(IntendedXMLStreamWriter sw) throws XMLStreamException {
-        writeXMLStart(sw);
-        writeXMLContent(sw);
-        writeXMLEnd(sw);
-    }
-
-    /*
-     * (non-JavaDoc)
-     * 
-     * @see org.abos.schemes.XMLSerializable#writeXMLStart(org.abos.schemes.
-     * IntendedXMLStreamWriter)
-     */
-    /**
-     * {@inheritDoc}
-     * @since 1.0.0
-     */
-    @Override
-    public void writeXMLStart(IntendedXMLStreamWriter sw)
-            throws XMLStreamException {
-        sw.writeStartElement(XML_SCHEME);
-    }
-    
-    
-    /*
-     * (non-JavaDoc)
-     * 
-     * @see org.abos.schemes.XMLSerializable#writeXMLContent(org.abos.schemes.
-     * IntendedXMLStreamWriter)
-     */
-    /**
-     * {@inheritDoc}
-     * @since 1.0.0
-     */
-    @Override
-    public void writeXMLContent(IntendedXMLStreamWriter sw)
-            throws XMLStreamException {
-        sw.writeStartElement(XML_NODES);
-        for (InformationComponent ic : this) {
-            ic.writeXML(sw);
-        }
-        sw.writeEndElement(); 
-    }
-
-    /*
-     * (non-JavaDoc)
-     * 
-     * @see org.abos.schemes.XMLSerializable#writeXMLEnd(org.abos.schemes.
-     * IntendedXMLStreamWriter)
-     */
-    /**
-     * {@inheritDoc}
-     * @since 1.0.0
-     */
-    @Override
-    public void writeXMLEnd(IntendedXMLStreamWriter sw)
-            throws XMLStreamException {
-        sw.writeEndElement();
-    }
-    
-    /**
-     * Loads data given as XML from a given reader to the information scheme by 
-     * using the methods given by {@link XMLSerializable}.
-     * @param rd the reader to load data for the scheme from
-     * @throws SchemeDependencyException
-     * @throws XMLStreamException
-     * 
-     * @since 1.0.0
-     * 
-     * @see #readXML(XMLStreamReader, InformationScheme)
-     * @see #save(Writer)
-     */
-    // Javadoc throws? NPE?
-    public void load(Reader rd) throws XMLStreamException {
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        XMLStreamReader parser = factory.createXMLStreamReader(rd);
-        if (parser.getEventType() != XMLStreamConstants.START_DOCUMENT)
-            throw new XMLStreamException(XML_ERR_EXPECTED_START_DOCUMENT);
-        parser.nextTag();
-        readXML(parser, null);
-        if (parser.getEventType() != XMLStreamConstants.END_DOCUMENT)
-            throw new XMLStreamException(XML_ERR_EXPECTED_END_DOCUMENT);
-        parser.close();
-    }
-    
-    /**
-     * Loads data given as XML from a given file to the information scheme by 
-     * using the methods given by {@link XMLSerializable}.
-     * @param file the file to load data for the scheme from
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws SchemeDependencyException
-     * @throws XMLStreamException
-     * 
-     * @since 1.0.0
-     * 
-     * @see #load(Reader)
-     * @see #readXML(XMLStreamReader, InformationScheme)
-     * @see #save(File)
-     */
-    // Javadoc throws? NPE?
-    public void load(File file) throws IOException, XMLStreamException {
-        FileReader fr = new FileReader(file);
-        load(fr);
-        fr.close();
-    }
-    
-    /**
-     * Loads data given as XML from a given file to the information scheme by 
-     * using the methods given by {@link XMLSerializable}.
-     * @param pathToFile the path to the file to load data for the scheme from
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws NullPointerException If the <code>pathToFile</code> argument is
-     * <code>null</code>.
-     * @throws SchemeDependencyException
-     * @throws XMLStreamException
-     * 
-     * @since 1.0.0
-     * 
-     * @see #load(File)
-     * @see #readXML(XMLStreamReader, InformationScheme)
-     * @see #save(String)
-     */
-    // Javadoc throws?
-    public void load(String pathToFile) throws IOException, XMLStreamException {
-        load(new File(pathToFile));
     }
 
     /*
@@ -388,6 +319,75 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
         parser.next();
         //parser.nextTag(); // XXX needs to be properly documented or coded
     }
+    
+    /**
+     * Loads data given as XML from a given reader to the information scheme by 
+     * using the methods given by {@link XMLSerializable}.
+     * @param rd the reader to load data for the scheme from
+     * @throws SchemeDependencyException
+     * @throws XMLStreamException
+     * 
+     * @since 1.0.0
+     * 
+     * @see #readXML(XMLStreamReader, InformationScheme)
+     * @see #save(Writer)
+     */
+    // Javadoc throws? NPE?
+    public void load(Reader rd) throws XMLStreamException {
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        XMLStreamReader parser = factory.createXMLStreamReader(rd);
+        if (parser.getEventType() != XMLStreamConstants.START_DOCUMENT)
+            throw new XMLStreamException(XML_ERR_EXPECTED_START_DOCUMENT);
+        parser.nextTag();
+        readXML(parser, null);
+        if (parser.getEventType() != XMLStreamConstants.END_DOCUMENT)
+            throw new XMLStreamException(XML_ERR_EXPECTED_END_DOCUMENT);
+        parser.close();
+    }
+    
+    /**
+     * Loads data given as XML from a given file to the information scheme by 
+     * using the methods given by {@link XMLSerializable}.
+     * @param file the file to load data for the scheme from
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws SchemeDependencyException
+     * @throws XMLStreamException
+     * 
+     * @since 1.0.0
+     * 
+     * @see #load(Reader)
+     * @see #readXML(XMLStreamReader, InformationScheme)
+     * @see #save(File)
+     */
+    // Javadoc throws? NPE?
+    public void load(File file) throws IOException, XMLStreamException {
+        FileReader fr = new FileReader(file);
+        load(fr);
+        fr.close();
+    }
+    
+    /**
+     * Loads data given as XML from a given file to the information scheme by 
+     * using the methods given by {@link XMLSerializable}.
+     * @param pathToFile the path to the file to load data for the scheme from
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws NullPointerException If the <code>pathToFile</code> argument is
+     * <code>null</code>.
+     * @throws SchemeDependencyException
+     * @throws XMLStreamException
+     * 
+     * @since 1.0.0
+     * 
+     * @see #load(File)
+     * @see #readXML(XMLStreamReader, InformationScheme)
+     * @see #save(String)
+     */
+    // Javadoc throws?
+    public void load(String pathToFile) throws IOException, XMLStreamException {
+        load(new File(pathToFile));
+    }
 
     
     
@@ -437,7 +437,46 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
         return result;
     }
 
-    
+    /* 
+     * (non-JavaDoc)
+     * 
+     * @see org.abos.schemes.DOTWriter#writeDOT(java.io.Writer)
+     */
+    /**
+     * {@inheritDoc}
+     * @since 1.0.0
+     */
+    @Override
+    public void writeDOT(Writer wr) throws IOException {
+        BufferedWriter bw = new BufferedWriter(wr);
+        bw.write(DOT_START);
+        for (E ic : this) {
+            bw.write(DOT_TAB);
+            bw.write(DOT_QUOTES);
+            bw.write(ic.getName());
+            bw.write(DOT_QUOTES);
+            Iterator<SchemeComponent> children = ic.childrenIterator();
+            // write children down
+            if (!children.hasNext()) {
+                bw.write(DOT_EOL);
+                continue;
+            }
+            bw.write(DOT_CHILDREN_START);
+            while (true) {
+                bw.write(DOT_QUOTES);
+                bw.write(((E)children.next()).getName());
+                bw.write(DOT_QUOTES);
+                if (children.hasNext())
+                    bw.write(DOT_CHILDREN_SEP);
+                else {
+                    bw.write(DOT_CHILDREN_END);
+                    break;
+                }
+            }
+        }
+        bw.write(DOT_END);
+        bw.close();
+    }    
     
     /*
      * remember to keep getByString in check when making changes here
@@ -527,47 +566,6 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
             s.append(e.descendantsToString());
         }
         return s.toString();
-    }
-
-    /* 
-     * (non-JavaDoc)
-     * 
-     * @see org.abos.schemes.DOTWriter#writeDOT(java.io.Writer)
-     */
-    /**
-     * {@inheritDoc}
-     * @since 1.0.0
-     */
-    @Override
-    public void writeDOT(Writer wr) throws IOException {
-        BufferedWriter bw = new BufferedWriter(wr);
-        bw.write(DOT_START);
-        for (E ic : this) {
-            bw.write(DOT_TAB);
-            bw.write(DOT_QUOTES);
-            bw.write(ic.getName());
-            bw.write(DOT_QUOTES);
-            Iterator<SchemeComponent> children = ic.childrenIterator();
-            // write children down
-            if (!children.hasNext()) {
-                bw.write(DOT_EOL);
-                continue;
-            }
-            bw.write(DOT_CHILDREN_START);
-            while (true) {
-                bw.write(DOT_QUOTES);
-                bw.write(((E)children.next()).getName());
-                bw.write(DOT_QUOTES);
-                if (children.hasNext())
-                    bw.write(DOT_CHILDREN_SEP);
-                else {
-                    bw.write(DOT_CHILDREN_END);
-                    break;
-                }
-            }
-        }
-        bw.write(DOT_END);
-        bw.close();
     }
 
 }
