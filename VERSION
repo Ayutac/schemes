@@ -16,10 +16,12 @@ Field/Method Version (default 1.0.0) @since Class Version:
  - added export methods to ArrayInformationScheme.java
  
 ~ 1.1.0
- - ???
+ - added method forceFamilyApart() in SchemeComponent.java and implemented it in
+    AbstractSchemeComponent.java
 
 ~ 1.0.1
- - ???
+ - removed bug caused by invalid regex by adding planned behavior to
+    InformationScheme.java and ArrayInformationScheme.java
 
 ~ 1.0.0
  - initial commit, core classes added
