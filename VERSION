@@ -6,6 +6,10 @@ Class Version @since PKG Version
 Field/Method Version (default 1.0.0) @since Class Version:
 
 ## Project change log:
+~ 1.3.2
+ - ICChooser will get focus into search text field if shown
+ - ICChooser will clear selection on reset
+
 ~ 1.3.1
  - added hierarchically sorting before saving to ArrayInformationScheme
 

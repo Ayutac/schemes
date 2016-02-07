@@ -31,7 +31,7 @@ import org.abos.schemes.InformationScheme;
  * A dialog to select an information component of a given scheme
  * with help of a search field.
  * @author Sebastian Koch
- * @version 1.0.0
+ * @version 1.0.1
  * @since 1.0.0
  *
  * @see SelectiveICListModel
@@ -272,17 +272,37 @@ public class ICChooser extends JDialog {
     public void setSelectedIC(InformationComponent selectedIC) {
         this.selectedIC = selectedIC;
     }
+    
+    /*
+     * 
+     * (non-JavaDoc)
+     *
+     * @see java.awt.Dialog#setVisible(boolean)
+     */
+    /**
+     * {@inheritDoc}<br>
+     * If set to <code>true</code>, will let {@link #txtSearch} request focus.  
+     * @since 1.0.1
+     */
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        if (b)
+            txtSearch.requestFocus();
+    }
 
     /**
      * Resets the dialog, so {@link #txtSearch} will be emptied and 
      * {@link #list} displays all components again.
      * 
+     * @version 1.0.1
      * @since 1.0.0
      */
     public void reset() {
         txtSearch.setText(""); // doesn't clear the model
         listModel.setSearchString("");
         listModel.refreshSelection();
+        list.getSelectionModel().clearSelection();
         pack();
     }
     

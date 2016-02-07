@@ -6,7 +6,7 @@
  * with supporting classes.
  * 
  * @author A Breeze Of Science
- * @version 1.0.0
+ * @version 1.0.1
  * @since 1.3.0
  */
 // created on 28.01.2016
