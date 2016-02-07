@@ -7,7 +7,7 @@
  * faster access.
  * 
  * @author A Breeze Of Science
- * @version 1.2.0
+ * @version 1.2.1
  * @since 1.0.0
  */
 // created on 05.04.2015

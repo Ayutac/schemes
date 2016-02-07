@@ -34,7 +34,7 @@ import javax.xml.stream.XMLStreamWriter;
  * This class is not thread-safe.
  * 
  * @author Sebastian Koch
- * @version 1.1.0
+ * @version 1.1.1
  * @since 1.0.0
  * 
  * @see ArrayScheme
@@ -188,6 +188,7 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
      * @throws IOException 
      * @throws XMLStreamException
      * 
+     * @version 1.0.1
      * @since 1.0.0
      * 
      * @see #save(Writer)
@@ -197,6 +198,7 @@ XMLSerializable, XMLSchemeConstants, DOTWriter {
     // Javadoc complete throws (NPE?)
     public void save(File file) throws IOException, XMLStreamException {
         FileWriter fw = new FileWriter(file);
+        halfsortHierarchically();
         save(fw);
         fw.close();
     }
